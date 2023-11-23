@@ -48,38 +48,54 @@ export function CharacterList() {
   function switchSpecies(species) {
     switch (species) {
       case "Human":
-        species = "Człowiek";
+        species = " Człowiek";
         break;
       case "Alien":
-        species = "Kosmita";
+        species = " Kosmita";
         break;
       case "Animal":
-        species = "Zwierze";
+        species = " Zwierze";
         break;
       case "Humanoid":
-        species = "Humanoid";
+        species = " Humanoid";
         break;
       case "Mythological Creature":
-        species = "Stworzenie mitologiczne";
+        species = " Stworzenie mitologiczne";
         break;
       case "Robot":
-        species = "Robot";
+        species = " Robot";
         break;
       case "Cronenberg":
-        species = "Cronenberg";
+        species = " Cronenberg";
         break;
       case "Disease":
-        species = "Choroba";
+        species = " Choroba";
         break;
       case "unknown":
-        species = "nieznane";
+        species = " nieznane";
         break;
       case "Poopybutthole":
-        species = "Poopybutthole";
+        species = " Poopybutthole";
         break;
     }
 
     return species;
+  }
+
+  function switchStatus(status) {
+    switch (status) {
+      case "Dead":
+        status = "Nieżywy";
+        break;
+      case "Alive":
+        status = "Żywy";
+        break;
+      case "unknown":
+        status = "nieznane";
+        break;
+    }
+
+    return status;
   }
 
   return (
@@ -117,7 +133,8 @@ export function CharacterList() {
                     `}
                   ></span>
                   <p>
-                    {character.status} - {switchSpecies(character.species)}
+                    {switchStatus(character.status)} -
+                    {switchSpecies(character.species)}
                   </p>
                 </div>
               </div>
