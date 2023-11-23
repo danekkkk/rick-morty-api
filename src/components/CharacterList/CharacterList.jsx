@@ -2,15 +2,18 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import InfiniteScroll from "react-infinite-scroll-component";
 import CircularProgress from "@mui/material/CircularProgress";
-import Skeleton from "@mui/material/Skeleton";
 import styles from "./CharacterList.module.css";
 import favoriteIcon from "../../assets/favoriteIcon.svg";
+import favoriteIconSet from "../../assets/favoriteIconSet.svg";
+import Skeleton from "@mui/material/Skeleton";
 
 export function CharacterList() {
   const [characters, setCharacters] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [skeletonLoading, setSkeletonLoading] = useState(true);
+  const [favorites, setFavorites] = useState([]);
 
   const fetchCharacters = async () => {
     try {
@@ -22,6 +25,7 @@ export function CharacterList() {
       if (newCharacters.length > 0) {
         setTimeout(() => {
           setLoading(false);
+          setSkeletonLoading(false);
           setCharacters((prevCharacters) => [
             ...prevCharacters,
             ...newCharacters,
@@ -85,7 +89,7 @@ export function CharacterList() {
   function switchStatus(status) {
     switch (status) {
       case "Dead":
-        status = "Nieżywy";
+        status = "Martwy";
         break;
       case "Alive":
         status = "Żywy";
@@ -96,6 +100,42 @@ export function CharacterList() {
     }
 
     return status;
+  }
+
+  function toggleFavorite(character) {
+    const isAlreadyAdded = favorites.some(
+      (favorite) => favorite.id === character.id
+    );
+
+    if (isAlreadyAdded) {
+      const updatedFavorites = favorites.filter(
+        (favorite) => favorite.id !== character.id
+      );
+      setFavorites(updatedFavorites);
+    } else {
+      setFavorites((prevFavorites) => [...prevFavorites, character]);
+    }
+  }
+
+  if (skeletonLoading) {
+    const skeletonArray = [];
+
+    for (let i = 0; i < 20; i++) {
+      skeletonArray.push("#" + i);
+    }
+
+    return (
+      <>
+        <h1 className={styles.heading}>Wszystkie postacie</h1>
+        <div className={styles.sourceContainer}>
+          {skeletonArray.map((el, index) => (
+            <div key={index} className={styles.card}>
+              <Skeleton variant="rounded" width={340} height={320} />
+            </div>
+          ))}
+        </div>
+      </>
+    );
   }
 
   return (
@@ -139,8 +179,18 @@ export function CharacterList() {
                 </div>
               </div>
               <div>
-                <button className={styles.addToFavorite}>
-                  <img src={favoriteIcon} alt="like button" />
+                <button
+                  className={styles.addToFavorite}
+                  onClick={() => toggleFavorite(character)}
+                >
+                  <img
+                    src={
+                      favorites.some((favorite) => favorite.id === character.id)
+                        ? favoriteIconSet
+                        : favoriteIcon
+                    }
+                    alt="like button"
+                  />
                 </button>
               </div>
             </div>

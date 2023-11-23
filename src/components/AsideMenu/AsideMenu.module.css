@@ -73,3 +73,9 @@
 .loginBtn img {
   margin-right: 15px;
 }
+
+@media only screen and (max-width: 1185px) {
+  .asideMenu {
+    width: 250px;
+  }
+}

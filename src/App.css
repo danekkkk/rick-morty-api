@@ -23,3 +23,13 @@
   margin-bottom: 10px;
   flex-wrap: wrap;
 }
+
+@media only screen and (max-width: 1185px) {
+  .aside {
+    flex-basis: 250px;
+  }
+  .source {
+    flex-basis: calc(100% - 250px);
+    padding: 20px;
+  }
+}
