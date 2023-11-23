@@ -1,0 +1,75 @@
+.asideMenu {
+  position: fixed;
+  background-color: #f4f4f4;
+  width: 350px;
+  height: 100vh;
+  box-shadow: -1px 0px 36px 7px rgba(161, 161, 161, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.heading {
+  margin: 4rem 0;
+  font-size: 2.8rem;
+  text-align: center;
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+}
+
+.links li {
+  font-size: 1.8rem;
+  list-style-type: none;
+  padding-left: 4rem;
+  display: flex;
+  align-items: center;
+  height: 50px;
+  transition: background 0.9s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.links li:hover {
+  background-color: #fff;
+}
+
+.active {
+  background-color: #fff;
+}
+
+.linksFlex {
+  display: flex;
+  align-items: center;
+}
+
+.links li img {
+  margin-right: 15px;
+}
+
+.links a {
+  text-decoration: none;
+  color: #000;
+  flex-basis: 100%;
+}
+
+.loginBtn {
+  font-size: 1.8rem;
+  padding-left: 4rem;
+  margin-bottom: 30px;
+}
+
+.loginBtn a {
+  text-decoration: none;
+  color: #000;
+  transition: color 0.9s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.loginBtn a:hover {
+  color: #4d4d4d;
+  text-decoration: underline;
+}
+
+.loginBtn img {
+  margin-right: 15px;
+}
