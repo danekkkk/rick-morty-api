@@ -45,6 +45,43 @@ export function CharacterList() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  function switchSpecies(species) {
+    switch (species) {
+      case "Human":
+        species = "Człowiek";
+        break;
+      case "Alien":
+        species = "Kosmita";
+        break;
+      case "Animal":
+        species = "Zwierze";
+        break;
+      case "Humanoid":
+        species = "Humanoid";
+        break;
+      case "Mythological Creature":
+        species = "Stworzenie mitologiczne";
+        break;
+      case "Robot":
+        species = "Robot";
+        break;
+      case "Cronenberg":
+        species = "Cronenberg";
+        break;
+      case "Disease":
+        species = "Choroba";
+        break;
+      case "unknown":
+        species = "nieznane";
+        break;
+      case "Poopybutthole":
+        species = "Poopybutthole";
+        break;
+    }
+
+    return species;
+  }
+
   return (
     <InfiniteScroll
       dataLength={characters.length}
@@ -80,7 +117,7 @@ export function CharacterList() {
                     `}
                   ></span>
                   <p>
-                    {character.status} - {character.species}
+                    {character.status} - {switchSpecies(character.species)}
                   </p>
                 </div>
               </div>
