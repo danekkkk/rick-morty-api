@@ -1,4 +1,3 @@
-import "../App.css";
 import styles from "./Login.module.css";
 
 export function Login() {
