@@ -1,17 +1,22 @@
-import { CharacterList } from "./components/CharacterList/CharacterList";
-import "./App.css";
-import { AsideMenu } from "./components/AsideMenu/AsideMenu";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Home } from "./pages/Home";
+import { Search } from "./pages/Search";
+import { Favorites } from "./pages/Favorites";
+import { Login } from "./pages/Login";
+import { Register } from "./pages/Register";
 
 const App = () => {
   return (
     <>
-      <main className="container">
-        <AsideMenu />
-        <div className="aside"></div>
-        <div className="source">
-          <CharacterList />
-        </div>
-      </main>
+      <BrowserRouter>
+        <Routes>
+          <Route index path="/" element={<Home />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/favorites" element={<Favorites />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </BrowserRouter>
     </>
   );
 };

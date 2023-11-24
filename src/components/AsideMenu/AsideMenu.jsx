@@ -3,46 +3,55 @@ import heartIcon from "../../assets/heartIcon.svg";
 import homeIcom from "../../assets/homeIcon.svg";
 import searchIcon from "../../assets/searchIcon.svg";
 import shekelSignIcon from "../../assets/shekelSignIcon.svg";
+import { useLocation } from "react-router-dom";
+
+import { Link } from "react-router-dom";
 
 export function AsideMenu() {
+  const location = useLocation();
+
+  const isPathActive = (path) => {
+    return location.pathname === path ? styles.active : "";
+  };
+
   return (
     <aside className={styles.asideMenu}>
       <div>
         <h1 className={styles.heading}>Rick & Morty</h1>
         <ul className={styles.links}>
-          <a href="#">
-            <li className={styles.active}>
+          <Link to="/">
+            <li className={isPathActive("/")}>
               <div className={styles.linksFlex}>
                 <img src={homeIcom} />
                 Strona główna
               </div>
             </li>
-          </a>
-          <a href="#">
-            <li>
+          </Link>
+          <Link to="/search">
+            <li className={isPathActive("/search")}>
               <div className={styles.linksFlex}>
                 <img src={searchIcon} />
                 Wyszukaj
               </div>
             </li>
-          </a>
-          <a href="#">
-            <li>
+          </Link>
+          <Link to="/favorites">
+            <li className={isPathActive("/favorites")}>
               <div className={styles.linksFlex}>
                 <img src={heartIcon} />
                 Polubione
               </div>
             </li>
-          </a>
+          </Link>
         </ul>
       </div>
       <div className={styles.loginBtn}>
-        <a href="#">
+        <Link to="/login">
           <div className={styles.linksFlex}>
             <img src={shekelSignIcon} />
             Zaloguj się
           </div>
-        </a>
+        </Link>
       </div>
     </aside>
   );
