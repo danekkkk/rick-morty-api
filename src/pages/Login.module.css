@@ -1,4 +1,97 @@
 .nazwa {
-  color: red;
-  font-size: 1.6rem;
+  color: black;
+  font-size: 4rem;
+  margin-bottom: 35rem;
+  position: fixed;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  font-family: "Lato";
+  margin: auto;
+}
+
+.main{
+  flex-direction: column;
+  background-color: white;
+  display: flex;
+  width: 45rem;
+  height: 50rem;
+  box-shadow: 0px 0px 1rem black;
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+  padding: 5rem;
+  margin: auto;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login {
+  display: flex;
+  height: 6rem;
+  width: 40rem;
+  text-align: left;
+  padding-left: 1.5rem;
+  font-size: 2.5rem;
+  margin-bottom: 4rem;
+  border-radius: 1rem;
+  border: 2px solid black;
+}
+
+.password {
+  display: flex;
+  height: 6rem;
+  width: 40rem;
+  text-align: left;
+  padding-left: 1.5rem;
+  font-size: 2.5rem;
+  border-radius: 1rem;
+  border: 2px solid black;
+}
+
+.button {
+  position: fixed;
+  margin-top: 21rem;
+  height: 5rem;
+  width: 15rem;
+  border-radius: 3rem;
+  border-color: rgb(0, 140, 255, 0);
+  box-shadow: 0px 0px 10px black;
+  background-color: rgb(0, 140, 255);
+  color: white;
+  font-size: 2rem;
+}
+
+.button:hover {
+  background-color: rgb(218, 218, 218);
+  color: rgb(0, 140, 255);
+  box-shadow: 0px 0px 10px rgb(0, 140, 255);
+  border-color: rgba(0, 140, 255, 0);
+}
+
+.register {
+  display: flex;
+  flex-direction: row;
+  font-size: 1.7rem;
+  position: fixed;
+  margin-top: 29rem;
+}
+
+.link {
+  margin-left: 1rem;
+  text-decoration: none;
+  color: black;
+  font-weight: 700;
+}
+
+.link:hover {
+  text-decoration: underline;
 }

@@ -1,17 +1,26 @@
-import { CharacterList } from "../components/CharacterList/CharacterList";
-import "../App.css";
-import { AsideMenu } from "../components/AsideMenu/AsideMenu";
+import styles from "./Register.module.css";
+import { Link } from "react-router-dom";
+import arrowLeft from "../assets/arrowLeft.svg";
 
 export function Register() {
   return (
     <>
-      <main className="container">
-        <AsideMenu />
-        <div className="aside"></div>
-        <div className="source">
-          <CharacterList />
+      <Link to="/"><img src={arrowLeft} style={{height: "50px",position: "absolute", marginTop: "10px", marginLeft: "10px"}}/></Link>
+      <div className={styles.container}>
+        
+        <div className={styles.main}>
+          <h1 className={styles.nazwa}>Zarejestruj się</h1>
+          <form action="" className={styles.form}>
+            <input type="text" className={styles.login} placeholder="Login" />
+            <input type="text" className={styles.password} placeholder="Hasło" />
+            <input type="button" value="Rejestruj" className={styles.button} />
+            <div className={styles.register}>
+              <p className={styles.paragraph}>Masz już konto?</p>
+              <Link to="/login" className={styles.link}>Zaloguj się</Link>
+            </div>
+          </form>
         </div>
-      </main>
+      </div>
     </>
   );
 }
