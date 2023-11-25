@@ -31,6 +31,7 @@
   object-fit: cover;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
+  cursor: pointer;
 }
 
 .cardInfo {
@@ -89,4 +90,10 @@
   width: 8px;
   height: 8px;
   margin-right: 5px;
+}
+
+.isAnyResult {
+  font-size: 1.6rem;
+  text-align: center;
+  margin-left: 1rem;
 }

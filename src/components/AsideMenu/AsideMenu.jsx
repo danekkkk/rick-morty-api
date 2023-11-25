@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import styles from "./AsideMenu.module.css";
 import heartIcon from "../../assets/heartIcon.svg";
 import homeIcom from "../../assets/homeIcon.svg";
@@ -8,10 +9,22 @@ import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 export function AsideMenu() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const location = useLocation();
 
   const isPathActive = (path) => {
     return location.pathname === path ? styles.active : "";
+  };
+
+  // mozna wyniesc do pages/Home
+  useEffect(() => {
+    const storedLoggedInStatus = localStorage.getItem("isLoggedIn");
+    setIsLoggedIn(storedLoggedInStatus === "true");
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.setItem("isLoggedIn", "false");
+    setIsLoggedIn(false);
   };
 
   return (
@@ -46,10 +59,10 @@ export function AsideMenu() {
         </ul>
       </div>
       <div className={styles.loginBtn}>
-        <Link to="/login">
+        <Link to={isLoggedIn ? "/" : "/login"} onClick={handleLogout}>
           <div className={styles.linksFlex}>
             <img src={shekelSignIcon} />
-            Zaloguj się
+            {isLoggedIn ? "Wyloguj się" : "Zaloguj się"}
           </div>
         </Link>
       </div>

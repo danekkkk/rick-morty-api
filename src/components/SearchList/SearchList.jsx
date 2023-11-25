@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import InfiniteScroll from "react-infinite-scroll-component";
-import CircularProgress from "@mui/material/CircularProgress";
-import styles from "../CharacterList/CharacterList.module.css";
+import styles from "./SearchList.module.css";
 import favoriteIcon from "../../assets/favoriteIcon.svg";
 import favoriteIconSet from "../../assets/favoriteIconSet.svg";
+import InfiniteScroll from "react-infinite-scroll-component";
 import Skeleton from "@mui/material/Skeleton";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export function SearchList() {
   const [characters, setCharacters] = useState([]);
@@ -15,7 +16,57 @@ export function SearchList() {
   const [skeletonLoading, setSkeletonLoading] = useState(true);
   const [favorites, setFavorites] = useState([]);
   const [searchName, setSearchName] = useState("");
-  const [error, setError] = useState(false);
+
+  const [searchHistory, setSearchHistory] = useState([]);
+  const [showSearchHistory, setShowSearchHistory] = useState(false);
+
+  const [isLoggedIn, setIsLoggedIn] = useState(null);
+  const [blurTimeout, setBlurTimeout] = useState(null);
+
+  const navigate = useNavigate();
+
+  const handleCharacterClick = (characterId) => {
+    navigate(`/character/${characterId}`);
+  };
+
+  useEffect(() => {
+    setPage(1);
+    const delayDebounceFn = setTimeout(() => {
+      setCharacters([]);
+      setHasMore(true);
+      setLoading(true);
+      setSkeletonLoading(true);
+      fetchCharacters();
+      if (searchName.trim() !== "") {
+        addToSearchHistory(searchName);
+      }
+    }, 1000);
+
+    return () => clearTimeout(delayDebounceFn);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchName.toLowerCase()]);
+
+  useEffect(() => {
+    if (searchName === "") {
+      setPage(1);
+    }
+  }, [searchName]);
+
+  useEffect(() => {
+    const storedFavorites = localStorage.getItem("favorites");
+    if (storedFavorites) {
+      setFavorites(JSON.parse(storedFavorites));
+    }
+
+    const storedLoggedInStatus = localStorage.getItem("isLoggedIn");
+    setIsLoggedIn(storedLoggedInStatus === "true");
+
+    const storedSearchHistory = localStorage.getItem("searchHistory");
+    if (storedSearchHistory) {
+      setSearchHistory(JSON.parse(storedSearchHistory));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const fetchCharacters = async () => {
     try {
@@ -48,19 +99,42 @@ export function SearchList() {
     }
   };
 
-  useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      setCharacters([]);
-      setHasMore(true);
-      setPage(1);
-      setLoading(true);
-      setSkeletonLoading(true);
-      fetchCharacters();
-    }, 1000);
+  const addToSearchHistory = (searchValue) => {
+    const updatedHistory = [
+      searchValue,
+      ...searchHistory.filter((item) => item !== searchValue),
+    ].slice(0, 3);
+    setSearchHistory(updatedHistory);
+    localStorage.setItem("searchHistory", JSON.stringify(updatedHistory));
+  };
 
-    return () => clearTimeout(delayDebounceFn);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchName]);
+  const clearSearchHistory = () => {
+    setSearchHistory([]);
+    localStorage.removeItem("searchHistory");
+  };
+
+  const removeFromSearchHistory = (index) => {
+    const updatedHistory = [...searchHistory];
+    updatedHistory.splice(index, 1);
+    setSearchHistory(updatedHistory);
+    localStorage.setItem("searchHistory", JSON.stringify(updatedHistory));
+  };
+
+  const handleInputBlur = () => {
+    const timeout = setTimeout(() => {
+      setShowSearchHistory(false);
+    }, 100); // Opóźnienie 0.5 sekundy
+    setBlurTimeout(timeout);
+  };
+
+  const handleInputFocus = () => {
+    if (blurTimeout) {
+      clearTimeout(blurTimeout);
+    }
+    setShowSearchHistory(true);
+  };
+
+  let isAnyResult = characters.length == 0;
 
   function switchSpecies(species) {
     switch (species) {
@@ -125,8 +199,11 @@ export function SearchList() {
         (favorite) => favorite.id !== character.id
       );
       setFavorites(updatedFavorites);
+      localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
     } else {
-      setFavorites((prevFavorites) => [...prevFavorites, character]);
+      const newFavorites = [...favorites, character];
+      setFavorites(newFavorites);
+      localStorage.setItem("favorites", JSON.stringify(newFavorites));
     }
   }
 
@@ -151,10 +228,6 @@ export function SearchList() {
     );
   }
 
-  if (error) {
-    return <p>Brak danych z takim kryterium wyszukiwania :(</p>;
-  }
-
   return (
     <InfiniteScroll
       dataLength={characters.length}
@@ -172,17 +245,52 @@ export function SearchList() {
         )
       }
     >
-      <input
-        type="text"
-        placeholder="Search by character name..."
-        value={searchName}
-        onChange={(e) => setSearchName(e.target.value)}
-      />
+      <form action="#">
+        <input
+          type="text"
+          placeholder="Search by character name..."
+          value={searchName}
+          onChange={(e) => {
+            setSearchName(e.target.value);
+          }}
+          onSubmit={(e) => {
+            e.preventDefault();
+            setSearchName(e.target.value);
+          }}
+          onFocus={handleInputFocus}
+          onBlur={handleInputBlur}
+        />
+      </form>
+      {searchHistory.length > 0 && showSearchHistory && (
+        <div>
+          <p>Ostatnie wyszukiwania:</p>
+          <ul>
+            {searchHistory.map((item, index) => (
+              <li key={index}>
+                {item}
+                <button onClick={() => removeFromSearchHistory(index)}>
+                  X
+                </button>
+              </li>
+            ))}
+          </ul>
+          <button onClick={clearSearchHistory}>Usuń historię</button>
+        </div>
+      )}
       <h1 className={styles.heading}>Wszystkie postacie</h1>
       <div className={styles.sourceContainer}>
+        {isAnyResult && (
+          <p className={styles.isAnyResult}>
+            Brak danych z takim kryterium wyszukiwania :(
+          </p>
+        )}
         {characters.map((character, index) => (
           <div className={styles.card} key={index}>
-            <img src={character.image} alt={character.name} />
+            <img
+              src={character.image}
+              alt={character.name}
+              onClick={() => handleCharacterClick(character.id)}
+            />
             <div className={styles.cardInfo}>
               <div>
                 <p className={styles.characterName}>{character.name}</p>
@@ -204,11 +312,19 @@ export function SearchList() {
               <div>
                 <button
                   className={styles.addToFavorite}
-                  onClick={() => toggleFavorite(character)}
+                  onClick={() => {
+                    if (!isLoggedIn) {
+                      return navigate("/login");
+                    } else {
+                      toggleFavorite(character);
+                    }
+                  }}
                 >
                   <img
                     src={
-                      favorites.some((favorite) => favorite.id === character.id)
+                      favorites.some(
+                        (favorite) => favorite.id === character.id
+                      ) && isLoggedIn
                         ? favoriteIconSet
                         : favoriteIcon
                     }

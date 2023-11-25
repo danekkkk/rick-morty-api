@@ -6,9 +6,50 @@
   flex-basis: 350px;
 }
 
+.main {
+  flex-basis: calc(100% - 350px);
+  padding: 40px;
+  height: 100vh;
+  background-image: url("assets/group.png");
+  background-repeat: no-repeat;
+  background-size: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-bottom: 10%;
+  padding-left: 140px;
+  gap: 30px;
+}
+
 .source {
   flex-basis: calc(100% - 350px);
   padding: 40px;
+}
+
+.primaryHeading {
+  font-size: 4rem;
+}
+
+.description {
+  font-size: 3rem;
+}
+
+.cta {
+  background-color: #000;
+  font-size: 2rem;
+  padding: 10px 15px;
+  width: 200px;
+  height: 50px;
+  border: 1px solid black;
+  color: #fff;
+  text-decoration: none;
+  transition: background-color 0.9s cubic-bezier(0.075, 0.82, 0.165, 1);
+  text-align: center;
+  border-radius: 12px;
+}
+
+.cta:hover {
+  background-color: #141414;
 }
 
 .skeletonLoading {
