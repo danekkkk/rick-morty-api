@@ -274,7 +274,7 @@ export function SearchList() {
         <div className={styles.sourceContainer}>
           {skeletonArray.map((el, index) => (
             <div key={index} className={styles.card}>
-              <Skeleton variant="rounded" width={340} height={320} />
+              <Skeleton variant="rounded" width={"100%"} height={320} />
             </div>
           ))}
         </div>
@@ -316,6 +316,8 @@ export function SearchList() {
             }}
             onSubmit={(e) => {
               e.preventDefault();
+              setPage(1);
+              handleInputBlur();
               setSearchName(e.target.value);
             }}
             onFocus={handleInputFocus}

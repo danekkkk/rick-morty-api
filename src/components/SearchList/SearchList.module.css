@@ -110,6 +110,7 @@
   outline: none;
   border-radius: 5px;
   padding-left: 40px;
+  font-size: 1.6rem;
 }
 
 .searchForm input:focus {
@@ -154,6 +155,11 @@
   transition: background-color 0.9s cubic-bezier(0.075, 0.82, 0.165, 1);
   text-align: center;
   cursor: pointer;
+  transition: background-color 0.9s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.deleteAllBtn:hover {
+  background-color: #141414;
 }
 
 .searchHistoryList {
@@ -183,6 +189,12 @@
   color: #000;
   font-size: 1.6rem;
   padding-right: 5px;
+}
+
+@media only screen and (max-width: 500px) {
+  .card {
+    width: 100%;
+  }
 }
 
 @media only screen and (max-width: 420px) {

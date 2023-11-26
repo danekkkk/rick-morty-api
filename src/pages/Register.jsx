@@ -6,56 +6,79 @@ import arrowLeft from "../assets/arrowLeft.svg";
 export function Register() {
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [loginError, setLoginError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
   const [isRegistred, setIsRegistred] = useState(false);
 
   const navigate = useNavigate();
 
   const handleRegistration = () => {
-    if (login && password) {
-      localStorage.setItem("user", JSON.stringify({ login, password }));
-      console.log(JSON.stringify({ login, password }));
-      setError("");
-      setIsRegistred(true);
+    if (!login || login.length < 5) {
+      setLoginError(true);
     } else {
-      setError("Wypełnij wszystkie pola");
+      setLoginError(false);
     }
+
+    if (!password || password.length < 5) {
+      setPasswordError(true);
+    } else {
+      setPasswordError(false);
+    }
+
+    if (login && login.length >= 5 && password && password.length >= 5) {
+      localStorage.setItem("user", JSON.stringify({ login, password }));
+      setIsRegistred(true);
+    }
+  };
+
+  const handleLoginChange = (e) => {
+    setLogin(e.target.value);
+    setLoginError(false);
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+    setPasswordError(false);
   };
 
   if (isRegistred) {
     return navigate("/rick-morty-api/login");
   }
+
   return (
     <>
-      <Link to="/rick-morty-api/">
-        <img
-          src={arrowLeft}
-          style={{
-            height: "50px",
-            position: "absolute",
-            marginTop: "10px",
-            marginLeft: "10px",
-          }}
-        />
+      <Link to="/rick-morty-api/" className={styles.goBackBtn}>
+        <img src={arrowLeft} alt="Go back" />
       </Link>
+
       <div className={styles.container}>
-        <div className={styles.main}>
-          <h1 className={styles.nazwa}>Zarejestruj się</h1>
+        <div className={styles.card}>
+          <h1 className={styles.heading}>Zarejestruj się</h1>
           <form action="" className={styles.form}>
             <input
               type="text"
-              className={styles.login}
+              className={`${styles.formInput} ${loginError && styles.error}`}
               placeholder="Login"
               value={login}
-              onChange={(e) => setLogin(e.target.value)}
+              onChange={handleLoginChange}
             />
+            {loginError && (
+              <p className={styles.textError}>
+                Nazwa musi zawierać przynajmniej 5 znaków
+              </p>
+            )}
             <input
-              type="text"
-              className={styles.password}
+              type="password"
+              className={`${styles.formInput} ${passwordError && styles.error}`}
               placeholder="Hasło"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handlePasswordChange}
             />
+            {passwordError && (
+              <p className={styles.textError}>
+                Hasło musi zawierać przynajmniej 5 znaków
+              </p>
+            )}
             <input
               type="button"
               value="Rejestruj"
@@ -63,8 +86,7 @@ export function Register() {
               onClick={handleRegistration}
             />
             <div className={styles.register}>
-              <p className={styles.error}>{error}</p>
-              <p className={styles.paragraph}>Masz już konto?</p>
+              <p>Masz już konto?</p>
               <Link to="/rick-morty-api/login" className={styles.link}>
                 Zaloguj się
               </Link>
