@@ -4,6 +4,7 @@ import axios from "axios";
 import styles from "./SearchList.module.css";
 import favoriteIcon from "../../assets/favoriteIcon.svg";
 import favoriteIconSet from "../../assets/favoriteIconSet.svg";
+import searchIcon from "../../assets/searchIcon.svg";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Skeleton from "@mui/material/Skeleton";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -49,6 +50,11 @@ export function SearchList() {
   useEffect(() => {
     if (searchName === "") {
       setPage(1);
+      setCharacters([]);
+      setHasMore(true);
+      setLoading(true);
+      setSkeletonLoading(true);
+      fetchCharacters();
     }
   }, [searchName]);
 
@@ -123,7 +129,7 @@ export function SearchList() {
   const handleInputBlur = () => {
     const timeout = setTimeout(() => {
       setShowSearchHistory(false);
-    }, 100); // Opóźnienie 0.5 sekundy
+    }, 200);
     setBlurTimeout(timeout);
   };
 
@@ -245,12 +251,15 @@ export function SearchList() {
         )
       }
     >
-      <form action="#">
+      <form action="#" className={styles.searchForm}>
+        <div className={styles.searchContainer}>
+        <span className={styles.searchIcon}><img src={searchIcon} alt="searchIcon" /></span>
         <input
           type="text"
-          placeholder="Search by character name..."
           value={searchName}
+          placeholder="Wyszukaj..."
           onChange={(e) => {
+            setPage(1);
             setSearchName(e.target.value);
           }}
           onSubmit={(e) => {
@@ -260,14 +269,17 @@ export function SearchList() {
           onFocus={handleInputFocus}
           onBlur={handleInputBlur}
         />
+        </div>
       </form>
       {searchHistory.length > 0 && showSearchHistory && (
         <div>
           <p>Ostatnie wyszukiwania:</p>
           <ul>
             {searchHistory.map((item, index) => (
-              <li key={index}>
-                {item}
+              <li key={index} >
+                <span onClick={() => {
+                  setPage(1);
+                  setSearchName(item)}}>{item}</span>
                 <button onClick={() => removeFromSearchHistory(index)}>
                   X
                 </button>
