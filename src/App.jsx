@@ -11,12 +11,15 @@ const App = () => {
     <>
       <BrowserRouter>
         <Routes>
-          <Route index path="/" element={<Home />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/favorites" element={<Favorites />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/character/:id" element={<CharacterDetails />} />
+          <Route index path="/rick-morty-api/" element={<Home />} />
+          <Route path="/rick-morty-api/search" element={<Search />} />
+          <Route path="/rick-morty-api/favorites" element={<Favorites />} />
+          <Route path="/rick-morty-api/login" element={<Login />} />
+          <Route path="/rick-morty-api/register" element={<Register />} />
+          <Route
+            path="/rick-morty-api/character/:id"
+            element={<CharacterDetails />}
+          />
         </Routes>
       </BrowserRouter>
     </>

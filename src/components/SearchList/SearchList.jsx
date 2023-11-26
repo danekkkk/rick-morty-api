@@ -27,7 +27,7 @@ export function SearchList() {
   const navigate = useNavigate();
 
   const handleCharacterClick = (characterId) => {
-    navigate(`/character/${characterId}`);
+    navigate(`/rick-morty-api/character/${characterId}`);
   };
 
   const fetchCharacters = async () => {
@@ -46,7 +46,6 @@ export function SearchList() {
             ...newCharacters,
           ]);
           setPage((prevPage) => prevPage + 1);
-          console.log(page, hasMore, characters, searchName);
         }, 1000);
       } else {
         setHasMore(false);
@@ -398,7 +397,7 @@ export function SearchList() {
                   className={styles.addToFavorite}
                   onClick={() => {
                     if (!isLoggedIn) {
-                      return navigate("/login");
+                      return navigate("/rick-morty-api/login");
                     } else {
                       toggleFavorite(character);
                     }

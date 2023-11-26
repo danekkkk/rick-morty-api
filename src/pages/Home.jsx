@@ -17,7 +17,7 @@ export function Home() {
             Zarejestruj się na naszą platformę aby móc polubić swoje <br />
             ulubione postacie i mieć ja na wyciągnięcie ręki!
           </p>
-          <Link to="/register" className="cta">
+          <Link to="/rick-morty-api/register" className="cta">
             Zarejestruj się!
           </Link>
         </div>

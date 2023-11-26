@@ -97,7 +97,7 @@ export function FavoritesList() {
   }
 
   const handleCharacterClick = (characterId) => {
-    navigate(`/character/${characterId}`);
+    navigate(`/rick-morty-api/character/${characterId}`);
   };
 
   if (skeletonLoading) {

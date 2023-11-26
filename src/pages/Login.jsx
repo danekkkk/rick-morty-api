@@ -28,12 +28,12 @@ export function Login() {
   };
 
   if (isLoggedIn) {
-    return navigate("/");
+    return navigate("/rick-morty-api/");
   }
 
   return (
     <>
-      <Link to="/">
+      <Link to="/rick-morty-api/">
         <img
           src={arrowLeft}
           style={{
@@ -71,7 +71,7 @@ export function Login() {
             <div className={styles.register}>
               <p className={styles.error}>{error}</p>
               <p className={styles.paragraph}>Jeszcze nie masz konta?</p>
-              <Link to="/register" className={styles.link}>
+              <Link to="/rick-morty-api/register" className={styles.link}>
                 Zarejestruj się
               </Link>
             </div>

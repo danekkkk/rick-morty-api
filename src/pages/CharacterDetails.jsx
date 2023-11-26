@@ -23,7 +23,7 @@ export function CharacterDetails() {
     } catch (error) {
       console.error("Wystąpił bład podczas pobierania danych: ", error);
       setTimeout(() => {
-        navigate("/");
+        navigate("/rick-morty-api/");
       }, 2000);
     }
   };

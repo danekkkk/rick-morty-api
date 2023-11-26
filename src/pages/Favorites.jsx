@@ -15,7 +15,7 @@ export function Favorites() {
   }, []);
 
   if (!isLoggedIn) {
-    return navigate("/login");
+    return navigate("/rick-morty-api/login");
   }
 
   return (

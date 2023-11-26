@@ -63,24 +63,24 @@ export function AsideMenu() {
             <div>
               <h1 className={styles.heading}>Rick & Morty</h1>
               <ul className={styles.links}>
-                <Link to="/">
-                  <li className={isPathActive("/")}>
+                <Link to="/rick-morty-api/">
+                  <li className={isPathActive("/rick-morty-api/")}>
                     <div className={styles.linksFlex}>
                       <img src={homeIcom} />
                       Strona główna
                     </div>
                   </li>
                 </Link>
-                <Link to="/search">
-                  <li className={isPathActive("/search")}>
+                <Link to="/rick-morty-api/search">
+                  <li className={isPathActive("/rick-morty-api/search")}>
                     <div className={styles.linksFlex}>
                       <img src={searchIcon} />
                       Wyszukaj
                     </div>
                   </li>
                 </Link>
-                <Link to="/favorites">
-                  <li className={isPathActive("/favorites")}>
+                <Link to="/rick-morty-api/favorites">
+                  <li className={isPathActive("/rick-morty-api/favorites")}>
                     <div className={styles.linksFlex}>
                       <img src={heartIcon} />
                       Polubione
@@ -90,7 +90,10 @@ export function AsideMenu() {
               </ul>
             </div>
             <div className={styles.loginBtn}>
-              <Link to={isLoggedIn ? "/" : "/login"} onClick={handleLogout}>
+              <Link
+                to={isLoggedIn ? "/rick-morty-api/" : "/rick-morty-api/login"}
+                onClick={handleLogout}
+              >
                 <div className={styles.linksFlex}>
                   <img src={shekelSignIcon} />
                   {isLoggedIn ? "Wyloguj się" : "Zaloguj się"}
@@ -104,24 +107,24 @@ export function AsideMenu() {
           <div>
             <h1 className={styles.heading}>Rick & Morty</h1>
             <ul className={styles.links}>
-              <Link to="/">
-                <li className={isPathActive("/")}>
+              <Link to="/rick-morty-api/">
+                <li className={isPathActive("/rick-morty-api/")}>
                   <div className={styles.linksFlex}>
                     <img src={homeIcom} />
                     Strona główna
                   </div>
                 </li>
               </Link>
-              <Link to="/search">
-                <li className={isPathActive("/search")}>
+              <Link to="/rick-morty-api/search">
+                <li className={isPathActive("/rick-morty-api/search")}>
                   <div className={styles.linksFlex}>
                     <img src={searchIcon} />
                     Wyszukaj
                   </div>
                 </li>
               </Link>
-              <Link to="/favorites">
-                <li className={isPathActive("/favorites")}>
+              <Link to="/rick-morty-api/favorites">
+                <li className={isPathActive("/rick-morty-api/favorites")}>
                   <div className={styles.linksFlex}>
                     <img src={heartIcon} />
                     Polubione
@@ -131,7 +134,10 @@ export function AsideMenu() {
             </ul>
           </div>
           <div className={styles.loginBtn}>
-            <Link to={isLoggedIn ? "/" : "/login"} onClick={handleLogout}>
+            <Link
+              to={isLoggedIn ? "/rick-morty-api/" : "/rick-morty-api/login"}
+              onClick={handleLogout}
+            >
               <div className={styles.linksFlex}>
                 <img src={shekelSignIcon} />
                 {isLoggedIn ? "Wyloguj się" : "Zaloguj się"}

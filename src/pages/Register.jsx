@@ -23,11 +23,11 @@ export function Register() {
   };
 
   if (isRegistred) {
-    return navigate("/login");
+    return navigate("/rick-morty-api/login");
   }
   return (
     <>
-      <Link to="/">
+      <Link to="/rick-morty-api/">
         <img
           src={arrowLeft}
           style={{
@@ -65,7 +65,7 @@ export function Register() {
             <div className={styles.register}>
               <p className={styles.error}>{error}</p>
               <p className={styles.paragraph}>Masz już konto?</p>
-              <Link to="/login" className={styles.link}>
+              <Link to="/rick-morty-api/login" className={styles.link}>
                 Zaloguj się
               </Link>
             </div>
