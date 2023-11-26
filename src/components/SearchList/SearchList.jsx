@@ -30,9 +30,41 @@ export function SearchList() {
     navigate(`/character/${characterId}`);
   };
 
+  const fetchCharacters = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(
+        `https://rickandmortyapi.com/api/character?page=${page}&name=${searchName}`
+      );
+      const newCharacters = response.data.results;
+      if (newCharacters.length > 0) {
+        setTimeout(() => {
+          setLoading(false);
+          setSkeletonLoading(false);
+          setCharacters((prevCharacters) => [
+            ...prevCharacters,
+            ...newCharacters,
+          ]);
+          setPage((prevPage) => prevPage + 1);
+          console.log(page, hasMore, characters, searchName);
+        }, 1000);
+      } else {
+        setHasMore(false);
+      }
+    } catch (error) {
+      setLoading(false);
+      setSkeletonLoading(false);
+      return;
+    } finally {
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
+    }
+  };
+
   useEffect(() => {
-    setPage(1);
     const delayDebounceFn = setTimeout(() => {
+      setPage(1);
       setCharacters([]);
       setHasMore(true);
       setLoading(true);
@@ -44,18 +76,6 @@ export function SearchList() {
     }, 1000);
 
     return () => clearTimeout(delayDebounceFn);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchName.toLowerCase()]);
-
-  useEffect(() => {
-    if (searchName === "") {
-      setPage(1);
-      setCharacters([]);
-      setHasMore(true);
-      setLoading(true);
-      setSkeletonLoading(true);
-      fetchCharacters();
-    }
   }, [searchName]);
 
   useEffect(() => {
@@ -73,37 +93,6 @@ export function SearchList() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const fetchCharacters = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.get(
-        `https://rickandmortyapi.com/api/character?page=${page}&name=${searchName}`
-      );
-      const newCharacters = response.data.results;
-      if (newCharacters.length > 0) {
-        setTimeout(() => {
-          setLoading(false);
-          setSkeletonLoading(false);
-          setCharacters((prevCharacters) => [
-            ...prevCharacters,
-            ...newCharacters,
-          ]);
-          setPage((prevPage) => prevPage + 1);
-        }, 1000);
-      } else {
-        setHasMore(false);
-      }
-    } catch (error) {
-      setLoading(false);
-      setSkeletonLoading(false);
-      return;
-    } finally {
-      setTimeout(() => {
-        setLoading(false);
-      }, 1000);
-    }
-  };
 
   const addToSearchHistory = (searchValue) => {
     const updatedHistory = [
@@ -126,19 +115,19 @@ export function SearchList() {
     localStorage.setItem("searchHistory", JSON.stringify(updatedHistory));
   };
 
-  const handleInputBlur = () => {
+  function handleInputBlur() {
     const timeout = setTimeout(() => {
       setShowSearchHistory(false);
     }, 200);
     setBlurTimeout(timeout);
-  };
+  }
 
-  const handleInputFocus = () => {
+  function handleInputFocus() {
     if (blurTimeout) {
       clearTimeout(blurTimeout);
     }
     setShowSearchHistory(true);
-  };
+  }
 
   let isAnyResult = characters.length == 0;
 
@@ -207,7 +196,7 @@ export function SearchList() {
       setFavorites(updatedFavorites);
       localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
     } else {
-      const newFavorites = [...favorites, character];
+      const newFavorites = [character, ...favorites];
       setFavorites(newFavorites);
       localStorage.setItem("favorites", JSON.stringify(newFavorites));
     }
@@ -222,6 +211,66 @@ export function SearchList() {
 
     return (
       <>
+        <form action="#" className={styles.searchForm}>
+          <div className={styles.searchContainer}>
+            <span className={styles.searchIcon}>
+              <img src={searchIcon} alt="searchIcon" />
+            </span>
+            <input
+              type="text"
+              value={searchName}
+              placeholder="Wyszukaj..."
+              maxLength={70}
+              onChange={(e) => {
+                setPage(1);
+                setSearchName(e.target.value);
+              }}
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleInputBlur();
+                setSearchName(e.target.value);
+              }}
+              onFocus={handleInputFocus}
+              onBlur={handleInputBlur}
+            />
+          </div>
+        </form>
+        {searchHistory.length > 0 && showSearchHistory && (
+          <div className={styles.searchHistory}>
+            <div className={styles.searchHistoryHeading}>
+              <h1>Ostatnie wyszukiwania:</h1>
+              <button
+                className={styles.deleteAllBtn}
+                onClick={clearSearchHistory}
+              >
+                Wyczyść
+              </button>
+            </div>
+            <ul className={styles.searchHistoryList}>
+              {searchHistory.map((item, index) => (
+                <li key={index}>
+                  <span
+                    onClick={() => {
+                      setPage(1);
+                      setSearchName(item);
+                    }}
+                  >
+                    {item}
+                  </span>
+                  <button
+                    className={styles.deleteBtn}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      removeFromSearchHistory(index);
+                    }}
+                  >
+                    X
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
         <h1 className={styles.heading}>Wszystkie postacie</h1>
         <div className={styles.sourceContainer}>
           {skeletonArray.map((el, index) => (
@@ -253,42 +302,65 @@ export function SearchList() {
     >
       <form action="#" className={styles.searchForm}>
         <div className={styles.searchContainer}>
-        <span className={styles.searchIcon}><img src={searchIcon} alt="searchIcon" /></span>
-        <input
-          type="text"
-          value={searchName}
-          placeholder="Wyszukaj..."
-          onChange={(e) => {
-            setPage(1);
-            setSearchName(e.target.value);
-          }}
-          onSubmit={(e) => {
-            e.preventDefault();
-            setSearchName(e.target.value);
-          }}
-          onFocus={handleInputFocus}
-          onBlur={handleInputBlur}
-        />
+          <span className={styles.searchIcon}>
+            <img src={searchIcon} alt="searchIcon" />
+          </span>
+          <input
+            type="text"
+            value={searchName}
+            placeholder="Wyszukaj..."
+            maxLength={70}
+            onChange={(e) => {
+              setPage(1);
+              handleInputBlur();
+              setSearchName(e.target.value);
+            }}
+            onSubmit={(e) => {
+              e.preventDefault();
+              setSearchName(e.target.value);
+            }}
+            onFocus={handleInputFocus}
+            onBlur={handleInputBlur}
+          />
         </div>
       </form>
       {searchHistory.length > 0 && showSearchHistory && (
-        <div>
-          <p>Ostatnie wyszukiwania:</p>
-          <ul>
+        <div className={styles.searchHistory}>
+          <div className={styles.searchHistoryHeading}>
+            <h1>Ostatnie wyszukiwania:</h1>
+            <button
+              className={styles.deleteAllBtn}
+              onClick={clearSearchHistory}
+            >
+              Wyczyść
+            </button>
+          </div>
+          <ul className={styles.searchHistoryList}>
             {searchHistory.map((item, index) => (
-              <li key={index} >
-                <span onClick={() => {
-                  setPage(1);
-                  setSearchName(item)}}>{item}</span>
-                <button onClick={() => removeFromSearchHistory(index)}>
+              <li key={index}>
+                <span
+                  onClick={() => {
+                    setPage(1);
+                    setSearchName(item);
+                  }}
+                >
+                  {item}
+                </span>
+                <button
+                  className={styles.deleteBtn}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    removeFromSearchHistory(index);
+                  }}
+                >
                   X
                 </button>
               </li>
             ))}
           </ul>
-          <button onClick={clearSearchHistory}>Usuń historię</button>
         </div>
       )}
+
       <h1 className={styles.heading}>Wszystkie postacie</h1>
       <div className={styles.sourceContainer}>
         {isAnyResult && (

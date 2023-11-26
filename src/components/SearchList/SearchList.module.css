@@ -127,3 +127,75 @@
   left: 5px;
   transform: translateY(-50%);
 }
+
+.searchHistory {
+  width: 100%;
+  padding: 0px 23px;
+  display: flex;
+  flex-direction: column;
+}
+
+.searchHistoryHeading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.deleteAllBtn {
+  background-color: #000;
+  font-size: 1.6rem;
+  padding: 5px 10px;
+  width: 100px;
+  height: 40px;
+  border: 1px solid black;
+  border-radius: 5px;
+  color: #fff;
+  text-decoration: none;
+  transition: background-color 0.9s cubic-bezier(0.075, 0.82, 0.165, 1);
+  text-align: center;
+  cursor: pointer;
+}
+
+.searchHistoryList {
+  margin-top: 10px;
+  font-size: 1.8rem;
+  color: #393939;
+  list-style-type: none;
+}
+
+.searchHistoryList li {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.searchHistoryList li span {
+  cursor: pointer;
+}
+
+.deleteBtn,
+.deleteBtn:focus {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  color: #000;
+  font-size: 1.6rem;
+  padding-right: 5px;
+}
+
+@media only screen and (max-width: 420px) {
+  .searchForm {
+    padding: 5px;
+  }
+  .searchHistory {
+    width: 100%;
+    padding: 5px 5px;
+    display: flex;
+    flex-direction: column;
+  }
+  .sourceContainer {
+    margin: 0;
+  }
+}
